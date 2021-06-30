@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <h1>{% block title %} Exoplanet Info {% endblock %}</h1>
+    <div class="container-fluid">
+        <ul class="list-group">
+            {% for info in view_info %}
+            <li class="list-group-item d-flex justify-content-between align-items-start">
+                <div class="ms-2 me-auto">
+                    <div class="fw-bold">{{info[0]}}</div>
+                    {{info[1]|safe}}
+                </div>
+            </li>
+            {% endfor %}
+        </ul>
+    </div>
+    
+{% endblock %}

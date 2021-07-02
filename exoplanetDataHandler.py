@@ -59,7 +59,7 @@ def getSortedList():
                         pass
                     
                     if index=='loc_rowid':
-                        val = len(data)
+                        val = len(data)-1
                     if index == 'pl_name':
                         if val in used_names:
                             planetDict = None
@@ -74,3 +74,13 @@ def getSortedList():
     # with open('exoplanetsList.py', 'w+') as newF:
     #     newF.write('data=' + str(data))
     return data
+
+def getSystemPlanets(data):
+    hosts = {}
+    for planet_id in range(len(data)):
+        planet = data[planet_id]
+        hostname = planet['hostname']
+        if not hostname in hosts:
+            hosts[hostname] = []
+        hosts[hostname].append(planet_id)
+    return hosts

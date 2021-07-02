@@ -1,8 +1,33 @@
 {% extends 'base.html' %}
 
 {% block content %}
-    <h1>{% block title %} Exoplanet Info {% endblock %}</h1>
+    <h1>{% block title %} Exoplanet Visualization {% endblock %}</h1>
+    
+    <div class="container-fluid" id="animation-container">
+        <h2>System Orbital Motion</h2>
+        <h3>
+            1 second = 30 Earth days
+            Viewing orbit ecliptic
+        </h3>
+        <div id="orbit-animation-container">
+            <!-- <div id="star" style="top: 50%; left: 50%;">
+                <img src="{{url_for('static', filename='images/icons8-sun-90.png')}}" alt="star" width="100%" height="100%">
+            </div>
+            <div id="planet" style="top: 50%; left: 50%;">
+                <img src="{{url_for('static', filename='images/icons8-planet-90.png')}}" alt="planet" width="100%" height="100%">
+            </div> -->
+            <canvas id="orbit-canvas"
+                data-p_name="{{exoplanet.pl_name}}"
+                data-hostname="{{exoplanet.hostname}}"
+                data-system_planets="{{system_planets}}"
+                ></canvas>
+        </div>
+    </div>
+
+    <script src="{{url_for('static', filename='js/orbit_animation.js')}}"></script>
+    
     <div class="container-fluid">
+        <h2>Exoplanet Information</h2>
         <ul class="list-group">
             {% for info in view_info %}
             <li class="list-group-item d-flex justify-content-between align-items-start">

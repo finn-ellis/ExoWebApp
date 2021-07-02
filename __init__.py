@@ -9,7 +9,7 @@ systemPlanets = getSystemPlanets(exoplanets)
 
 def getViewInfo(exoplanet):
     
-    view_categories = ['pl_name', 'hostname', 'disc_year', 'discoverymethod', 'pl_orbper', 'pl_rade', 'pl_masse', 'pl_bmasse', 'pl_dens', 'sy_dist', 'st_metratio', 'pl_refname', 'st_refname']
+    view_categories = ['pl_name', 'hostname', 'disc_year', 'discoverymethod', 'pl_orbper', 'pl_rade', 'pl_bmasse', 'sy_dist', 'st_metratio', 'pl_refname', 'st_refname']
     view_info = []
     for category in view_categories:
         name = readableLabels[category]

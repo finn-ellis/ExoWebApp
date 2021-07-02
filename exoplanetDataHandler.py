@@ -9,6 +9,7 @@ FILE_NAME = 'exoplanetData.csv'
 QUERY_URL = "https://exoplanetarchive.ipac.caltech.edu/TAP/sync?query=select+pl_name,hostname,disc_year,discoverymethod,pl_orbper,pl_rade,pl_masse,pl_bmasse,pl_dens,sy_dist,st_metratio,pl_refname,st_refname,dec+from+ps&format=csv"
 
 def getSortedColumnName():
+    "Returns dictionary where key pl_name = list of planet data"
     column_names = None
     data = {}
 
@@ -35,6 +36,7 @@ def getSortedColumnName():
     return data
 
 def getSortedList():
+    """Returns list of planets, with no repetitions."""
     column_names = None
     data = []
     used_names = []
@@ -56,10 +58,13 @@ def getSortedList():
                     try:
                         val = int(val)
                     except:
-                        pass
+                        try:
+                            val = float(val)
+                        except:
+                            pass
                     
                     if index=='loc_rowid':
-                        val = len(data)-1
+                        val = len(data)
                     if index == 'pl_name':
                         if val in used_names:
                             planetDict = None
@@ -76,6 +81,7 @@ def getSortedList():
     return data
 
 def getSystemPlanets(data):
+    """Returns a dictionary where key = hostname and value = list of planets from data which is a list of planet data"""
     hosts = {}
     for planet_id in range(len(data)):
         planet = data[planet_id]

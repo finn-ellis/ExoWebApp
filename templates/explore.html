@@ -24,12 +24,16 @@
         </div>
         </br>
         <div class="row justify-content-center">
-            <a href="{{url_for('viewplanet', id=exoplanet.loc_rowid)}}" type="button" class="btn btn-primary mx-auto d-block">View Orbit</a>
+            <a href="{{url_for('viewplanet', pl_id=exoplanet.loc_rowid)}}" type="button" class="btn btn-primary mx-auto d-block">View Orbit</a>
         </div>
     </div>
 </div>
 {% endif %}
 
+<div>
+    <a href="{{url_for('search_planets')}}" type="button" class="btn btn-primary">Search Planets</a>
+</div>
+<br>
 <div class="grid-container">
     {% for exoplanet in exoplanets %}
     <div class="grid-item">
@@ -40,7 +44,7 @@
                 <!-- <p class="card-text">Intriguing planet explanation will go here some day. For now, you can have this.</p>
                 <span class="badge badge-info">Published {{exoplanet.pl_pubdate}}</span>
                 <span class="badge badge-info">Discovered using {{exoplanet.discoverymethod}}</span> -->
-                <a href="{{url_for('exploreSpecific', id=exoplanet.loc_rowid)}}" class="btn btn-primary">Discover</a>
+                <a href="{{url_for('explore_specific', pl_id=exoplanet.loc_rowid)}}" class="btn btn-primary">Discover</a>
             </div>
         </div>
     </div>

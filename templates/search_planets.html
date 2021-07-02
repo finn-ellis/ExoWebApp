@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+
+{% block title %}<h1>Search Exoplanets</h1>{% endblock %}
+
+{% block content %}
+<p>Enter data to search. Searches for entire match or partial match.</p>
+<p>Ex. "2." as the entry for mass will result in all planets with a mass of at least 2.</p>
+<p>Leave field blank to omit it from the search.</p>
+<br>
+<form action="{{url_for('explore')}}">
+    {% for category in search_categories %}
+    <label for="{{category[0]}}">{{category[1]}}</label><br>
+    <input id="{{category[0]}}" type="text" name="{{category[0]}}"><br>
+    {% endfor %}
+    <input type="submit" value="Submit">
+</form>
+{% endblock %}

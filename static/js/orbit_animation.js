@@ -5,7 +5,7 @@ const trail_radius = 10
 let scale = 70
 const days_per_second = 30
 const earth_mass = 3.00273e-6
-const gravitational_constant = 39.5
+const gravitational_constant = 39.478
 
 class v3 {
     x = 0;
@@ -26,7 +26,7 @@ class v3 {
     }
 
     mul(b) {
-        if (typeof(b) == "number") {
+        if (typeof (b) == "number") {
             return new v3(this.x * b, this.y * b, this.z * b)
         } else {
             return new v3(this.x * b.x, this.y * b.y, this.z * b.z)
@@ -34,7 +34,7 @@ class v3 {
     }
 
     div(b) {
-        if (typeof(b) == "number") {
+        if (typeof (b) == "number") {
             return new v3(this.x / b, this.y / b, this.z / b)
         } else {
             return new v3(this.x / b.x, this.y / b.y, this.z / b.z)
@@ -42,7 +42,7 @@ class v3 {
     }
 
     magnitude() {
-        return Math.sqrt(this.x**2 + this.y**2 + this.z**2)
+        return Math.sqrt(this.x ** 2 + this.y ** 2 + this.z ** 2)
     }
 
     unit() {
@@ -58,7 +58,7 @@ class mass {
         this.velocity = init_vel;
         this.acceleration = new v3(0, 0, 0);
         this.size_multi = size_multi;
-    
+
         this.positions = []
     }
 
@@ -82,12 +82,12 @@ class mass {
                 transparency = 1
                 circleScaleFactor = 1
             } else {
-                transparency = scaleFactor/2
+                transparency = scaleFactor / 2
                 circleScaleFactor = scaleFactor
             }
 
-            let x = width/2 + this.positions[i].x * scale
-            let y = height/2 + this.positions[i].y * scale
+            let x = width / 2 + this.positions[i].x * scale
+            let y = height / 2 + this.positions[i].y * scale
 
             ctx.beginPath()
             ctx.arc(
@@ -101,7 +101,7 @@ class mass {
             ctx.fill()
         }
 
-        ctx.fillText(this.name, width/2 + this.position.x*scale + trail_radius*2, height/2 + this.position.y*scale + trail_radius/2)
+        ctx.fillText(this.name, width / 2 + this.position.x * scale + trail_radius * 2, height / 2 + this.position.y * scale + trail_radius / 2)
     }
 }
 
@@ -110,7 +110,7 @@ class nBodySimulation {
         this.g = g
         this.dt = dt
         this.softeningConstraint = softeningConstraint
-        
+
         this.masses = masses
     }
 
@@ -148,7 +148,7 @@ class nBodySimulation {
                     // below could be optimized if performance is an issue
                     let diff = massB.position.sub(massA.position)
                     let distance = diff.magnitude()
-                    let d2 = distance**2
+                    let d2 = distance ** 2
 
                     const force = (this.g * massB.mass) / (d2 * Math.sqrt(d2 + this.softeningConstraint))
                     accel = accel.add(diff.mul(force))
@@ -193,16 +193,16 @@ function orbit_animation() {
     //     new v3(0.648778995445634, 0.747796691108466, -3.22953591923124e-5),
     //     new v3(-4.85085525059392, 4.09601538682312, -0.000258553333317722)
     // )
-    masses = []
-    // create star
-    masses.push(
+    masses = [
         new mass(
-                canvas.dataset.hostname,
-                Number(systemPlanets[0]["st_mass"]),
-                new v3(0, 0, 0),
-                new v3(0, 0, 0),
-                1.5
-            ))
+            canvas.dataset.hostname,
+            Number(systemPlanets[0]["st_mass"]),
+            new v3(0, 0, 0),
+            new v3(0, 0, 0),
+            1.5
+        )
+    ]
+    // create star
     let maxAxis = 0
     // create planets
     for (i = 0; i < systemPlanets.length; i++) {
@@ -210,23 +210,25 @@ function orbit_animation() {
         const plMajorAxis = Number(planetData["pl_orbsmax"])
         const plMass = Number(planetData["pl_bmasse"]) * earth_mass // conversion to solar mass
         const plEccen = Number(planetData["pl_orbeccen"])
-        const plAverageOrbitRadius = (plMajorAxis + Math.sqrt(plMajorAxis**2 * (1-(plEccen**2))))/2
-        let plYearLength = Number(planetData["pl_orbper"])/365.25
+        const plAverageOrbitRadius = (plMajorAxis + Math.sqrt(plMajorAxis ** 2 * (1 - (plEccen ** 2)))) / 2
+        let plYearLength = Number(planetData["pl_orbper"]) / 365.25
         if (plYearLength == 0) {
             plYearLength = 1
         }
-        const plInitialVelocity = 2*Math.PI*plAverageOrbitRadius/plYearLength    // ... derived from kepler's law?
-        console.log(plAverageOrbitRadius, plYearLength, plEccen, plInitialVelocity)
+        // const plInitialVelocity = 2*Math.PI*plAverageOrbitRadius/plYearLength    // ... derived from kepler's law?
+        // console.log(plAverageOrbitRadius, plYearLength, plEccen, plInitialVelocity)
 
         // vis-viva equation isn't working for me. is my gravitational constant wrong? or one of the paramteres?
-        // const gParam = gravitational_constant * plMass
+        const gParam = gravitational_constant * plMass
         // const plInitialVelocity = Math.sqrt(gParam * ((2/plMajorAxis) - (1/plMajorAxis))) // vis-viva equation
-        // console.log(gParam, plMajorAxis, ":", plInitialVelocity)
+        const some_multiplier = 15  // i cannot figure out what this should be, but something isn't working with the equation below.
+        const plInitialVelocity = Math.sqrt(gParam / plMajorAxis) * some_multiplier // simplified
+        console.log(plMajorAxis, gParam, plInitialVelocity)
 
         masses.push(
             new mass(
                 planetData["pl_name"],
-                plMass, 
+                plMass,
                 new v3(0, plMajorAxis, 0),
                 new v3(plInitialVelocity, 0, 0),    // need to figure this out still
                 1
@@ -234,20 +236,20 @@ function orbit_animation() {
         )
         maxAxis = Math.max(maxAxis, plMajorAxis)
     }
-    scale = (height - trail_radius*2)/maxAxis/2
-    console.log("Scale:", scale+"px/au")
+    scale = (height - trail_radius * 2) / maxAxis / 2
+    console.log("Scale:", scale + "px/au")
     const simulation = new nBodySimulation(
         gravitational_constant,
-        days_per_second/365.25/framerate,
+        days_per_second / 365.25 / framerate,
         0.15,        // softeningConstant,
         masses
     )
 
     let id = null
     let current = 0
-    let max_frames = framerate*seconds
+    let max_frames = framerate * seconds
     clearInterval(id)
-    id = setInterval(frame, (1/framerate)*1000)
+    id = setInterval(frame, (1 / framerate) * 1000)
 
     // function positionElement(element, x, y) {
     //     absX = width/2 + x*scale
@@ -263,7 +265,7 @@ function orbit_animation() {
         simulation.updatePositionVectors()
             .updateAccelerationVectors()
             .updateVelocityVectors()
-        
+
         // positionElement(star, simulation.masses[0].position.x, simulation.masses[0].position.y)
         // positionElement(planet, simulation.masses[1].position.x, simulation.masses[1].position.y)
 
@@ -281,7 +283,7 @@ function orbit_animation() {
         }
 
         current++
-        let a = current/max_frames
+        let a = current / max_frames
         update(a)
     }
 }

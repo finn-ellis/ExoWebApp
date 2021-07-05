@@ -1,5 +1,5 @@
 import csv
-# comment
+
 # i would like to eventually get this using a web request... but is it worth it? I don't think the archive is being updated
 FILE_NAME = 'exoplanetData.csv'
 
@@ -40,6 +40,7 @@ def getSortedList():
     column_names = None
     data = []
     used_names = []
+    used_indices = []
 
     with open(FILE_NAME) as csv_file:
         csv_reader = csv.reader(csv_file, delimiter=',')
@@ -52,6 +53,7 @@ def getSortedList():
                 column_names = row
             else:
                 planetDict = {}
+                used = False
                 for i in range(len(row)):
                     index = column_names[i]
                     val = row[i]
@@ -67,12 +69,20 @@ def getSortedList():
                         val = len(data)
                     if index == 'pl_name':
                         if val in used_names:
-                            planetDict = None
-                            break
+                            # need to combine values
+                            used = True
                         else:
                             used_names.append(val)
                     planetDict[index] = val
-                if planetDict:
+                if used:
+                    # for index in range(len(data)):
+                    index = used_names.index(planetDict['pl_name'])
+                    if data[index]['pl_name'] == planetDict['pl_name']:
+                        existingData = data[index]
+                        for key, val in planetDict.items():
+                            if key != "loc_rowid" and existingData[key] != planetDict[key]:
+                                existingData[key] = planetDict[key]
+                else:
                     data.append(planetDict)
             line_count += 1
 

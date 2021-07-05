@@ -6,4 +6,30 @@
 
 {% block content %}
     <h1>{% block title %} Welcome to the Exoplanet Viewer {% endblock %}</h1>
+
+    <div text-align="center">
+        <ul display="table" text-align="center">
+            <li>
+                <div class="card" style="width: 100%">
+                    <!-- <img class="card-img-top" src="{{url_for('static', filename='images/exoplanet-stock-image.jpg')}}" alt="Exoplanet stock image"> -->
+                    <div class="card-body">
+                        <h5 class="card-title">Explore Exoplanets</h5>
+                        <p class="card-text">View a list of all discovered exoplanets. Discover systems and view simulated oribtal motion.</p>
+                        <a href="{{url_for('explore')}}" class="btn btn-primary">Discover</a>
+                    </div>
+                </div>
+            </li>
+            <br>
+            <li>
+                <div class="card" style="width: 100%">
+                    <!-- <img class="card-img-top" src="{{url_for('static', filename='images/exoplanet-stock-image.jpg')}}" alt="Exoplanet stock image"> -->
+                    <div class="card-body">
+                        <h5 class="card-title">About Website</h5>
+                        <p class="card-text">Acknowledgements towards contributing sources and project motivation.</p>
+                        <a href="{{url_for('about')}}" class="btn btn-primary">About</a>
+                    </div>
+                </div>
+            </li>
+        </ul>
+    </div>
 {% endblock %}

@@ -1,5 +1,5 @@
 import csv
-
+# comment
 # i would like to eventually get this using a web request... but is it worth it? I don't think the archive is being updated
 FILE_NAME = 'exoplanetData.csv'
 

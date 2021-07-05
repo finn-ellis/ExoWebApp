@@ -1,5 +1,5 @@
 from flask import Flask, render_template, request, redirect
-from exoplanetDataHandler import getSortedList, getSystemPlanets
+from static.python.exoplanetDataHandler import getSortedList, getSystemPlanets
 from static.python.readables import readableLabels
 import json
 

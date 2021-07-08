@@ -1,7 +1,8 @@
 import csv
+import os
 
 # i would like to eventually get this using a web request... but is it worth it? I don't think the archive is being updated
-FILE_NAME = 'exoplanetData.csv'
+FILE_NAME = os.path.dirname(os.path.dirname(__file__)) + '/csv/exoplanetData.csv'
 
 # found out how to use the api... it's slow
 # docs: https://exoplanetarchive.ipac.caltech.edu/docs/TAP/usingTAP.html
